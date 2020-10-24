@@ -29,7 +29,7 @@ class Cart with ChangeNotifier {
                 id: value.id,
                 title: value.title,
                 price: value.price,
-                quantity: value.quantity++,
+                quantity: value.quantity + 1,
               ));
     } else {
       _items.putIfAbsent(

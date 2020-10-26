@@ -87,4 +87,9 @@ class Products with ChangeNotifier {
       print('Does not exist the product.');
     }
   }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
 }

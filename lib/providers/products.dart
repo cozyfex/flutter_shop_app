@@ -68,9 +68,9 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url = 'https://flutter-shop-app-263f0.firebaseio.com/products.json';
-    http
+    return http
         .post(
       url,
       body: json.encode({

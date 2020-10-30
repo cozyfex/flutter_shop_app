@@ -146,7 +146,21 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+    final url = 'https://flutter-shop-app-263f0.firebaseio.com/products/$id';
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    var existingProduct = _items[existingProductIndex];
+    // _items.removeWhere((element) => element.id == id);
+    http.delete(url).then((response) {
+      if (response.statusCode >= 400) {
+
+      }
+      existingProduct = null;
+    }).catchError((_) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+    });
+    _items.removeAt(existingProductIndex);
     notifyListeners();
   }
 }

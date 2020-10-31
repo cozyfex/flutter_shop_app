@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -78,13 +77,17 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString =
-        filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     final url =
-        'https://flutter-shop-app-263f0.firebaseio.com/products.json?auth=$authToken$filterString';
+        'https://flutter-shop-app-263f0.firebaseio.com/products.json?auth=$authToken&$filterString';
 
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
       final List<Product> loadedProducts = [];
       final favoriteUrl =
           'https://flutter-shop-app-263f0.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
